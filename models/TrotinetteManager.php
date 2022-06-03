@@ -35,7 +35,10 @@ class TrotinetteManager extends ConnexionDb {
 
     public function getTrotinette() {
         $connexionDb = $this->getConnexionDb();
-        $sql = ('SELECT * FROM images');
+        $sql = "SELECT *
+                FROM `images` 
+                WHERE url_image LIKE'varla%'
+                LIMIT 3";
         $stmt = $connexionDb->prepare($sql);
         $stmt->execute();
         $trotinette = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -43,6 +46,13 @@ class TrotinetteManager extends ConnexionDb {
         return $trotinette;
     }
 
+    public function getTrotinetteById($id) {
+        foreach ($this->trotinettes as $trotinette) {
+            if ($trotinette->getId() === $id) {
+                return $trotinette;
+            }
+        }
+    }
 
 }
 
