@@ -2,11 +2,27 @@
 /* font-family: 'Abel', sans-serif; */
 
 
-
+body {
+    font-family: 'Abel', sans-serif;
+}
 
 /* logo */
 .persoLogoSize {
     width: 70px;
 }
 
+.persoMapsSize {
+    width: 75%;
+}
+
+.persoImg {
+    height: 300px;
+}
+
+
 /* text color */
+.persoColorBlack {
+    color: black;
+    text-shadow: white 1px 1px 1px;
+    font-weight: bold;
+}
