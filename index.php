@@ -13,7 +13,16 @@ try {
         switch($_GET['page']) {
             case 'home': $trotController->getHome();
             break;
-            case 'trotinettes': $trotController->displayTrotinettes();
+            case 'trotinettes': 
+                if (empty($_GET['action'])&& empty($_GET['id'])) {
+                    $trotController->displayTrotinettes();
+                } else {
+                    switch($_GET['action']) {
+                        case 'r' : $trotController->showTrotinette($_GET['id']);
+                        break; 
+                    }
+                }
+                
             break;
             case 'nous': $trotController->getNous();
             break;
