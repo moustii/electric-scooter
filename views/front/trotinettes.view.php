@@ -13,11 +13,11 @@ $description = "La page listant les trotinettes";
                 <h5 class="card-title">Special title treatment</h5>
             </div> -->
             <img class="img-fluid persoImg mx-auto my-2" src="public/sources/images/trotinettes/<?=$trotinette->getUrlImage()?>" alt="<?=$trotinette->getLabelImage()?>">
-            <div class="card-body">
+            <!-- <div class="card-body">
                 <p class="card-text">
-                    <?=$trotinette->getDescriptionTrotinette()?>
+                
                 </p>
-            </div>
+            </div> -->
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">Couleur : <?=$trotinette->getColor()?></li>
                 <li class="list-group-item">Vitesse max : <?=$trotinette->getSpeed()?> km/h</li>
@@ -25,17 +25,18 @@ $description = "La page listant les trotinettes";
                 <li class="list-group-item">
                     Prix : <?=$trotinette->getPrice()?> €
                     <div class="text-end">
-                        <span class="badge rounded-pill <?=($trotinette->getIdStatus()? 'bg-success':'bg-danger')?>">
-                            <?=($trotinette->getIdStatus()? 'dispo':'indispo')?>
+                        <span class="badge rounded-pill <?=($trotinette->getIdStatus()==1)? 'bg-success':'bg-danger'?>">
+                            <?=($trotinette->getIdStatus()==1)? 'dispo':'indispo'?>
                         </span>
                     </div>
-                </li>
-                
-                </ul>
-                <div class="card-footer text-muted">
-                <?php ($trotinette->getIdStatus())? "<span class='badge rounded-pill bg-success'>Success</span>": ''?>
-                <?=$trotinette->getDateService()?>
-            </div>
+                </li>    
+            </ul>
+                <div class="card-footer text-muted text-end">
+                    <?=$trotinette->getDateService()?>
+                    <a href="index.php?page=trotinettes&action=r&id=<?=$trotinette->getId()?>" class="btn btn-primary p-1 m-1 text-center">
+                        <i class="fa-solid fa-eye" style="color: white;"></i>
+                    </a>
+                </div>
         </div>
     </div>
     <?php endforeach;?>
