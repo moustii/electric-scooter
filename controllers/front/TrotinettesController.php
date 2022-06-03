@@ -22,5 +22,10 @@ class TrotinettesController {
         $trotinettes = $this->trotManager->getTrotinettes();
         require 'views/front/trotinettes.view.php';
     }
+
+    public function showTrotinette($id) {
+        $trotinette = $this->trotManager->getTrotinetteById($id);
+        require 'views/front/trotinette.view.php';
+    }
 }
 
