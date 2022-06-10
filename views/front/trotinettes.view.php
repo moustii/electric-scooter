@@ -42,6 +42,22 @@ $description = "La page listant les trotinettes";
     <?php endforeach;?>
 </div>
 
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        <li class="page-item <?=($currentPage === 1)? 'disabled':'' ?>">
+            <a class="page-link" href="index.php?page=trotinettes&p=<?=$currentPage -1?>">Précédent</a>
+        </li>
+        <?php for($i=1; $i<=$totalPage; $i++):?>
+        <li class="page-item <?=($currentPage === $i)? 'active':'' ?>">
+            <a class="page-link" href="index.php?page=trotinettes&p=<?=$i?>"><?=$i?></a>
+        </li>
+        <?php endfor;?>
+        <li class="page-item <?=($currentPage === $totalPage)? 'disabled':'' ?>">
+            <a class="page-link" href="index.php?page=trotinettes&p=<?=$currentPage+1?>">Suivant</a>
+        </li>
+    </ul>
+</nav>
+
 <?php
 $content = ob_get_clean();
 require 'views/commons/template.php';

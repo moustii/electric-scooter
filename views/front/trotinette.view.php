@@ -26,6 +26,9 @@ $description = "Page descriptive d'une trotinette";
                                 <?=($trotinette->getIdStatus()==1)? 'dispo':'indispo'?>
                             </span>
                         </div>
+                        <a class="btn btn-primary p-1 m-1 text-center" href="index.php?page=trotinettes">
+                            <i class="bi bi-arrow-left-square p-1"> Retour</i>
+                        </a>
                     </li>    
                 </ul>
             </div>
