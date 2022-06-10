@@ -39,7 +39,7 @@
     <!-- END NAV BAR -->
 
     <!-- MAIN CONTENT -->
-    <div class="container">
+    <div class="container p-4">
         <h1 class="text-center text-dark bg-light border border-light rounded p-1 m-3"><?=$title?></h1>
         <?=$content?>
     </div>
