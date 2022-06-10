@@ -21,8 +21,7 @@ try {
                         case 'r' : $trotController->showTrotinette($_GET['id']);
                         break; 
                     }
-                }
-                
+                }      
             break;
             case 'nous': $trotController->getNous();
             break;
