@@ -19,7 +19,18 @@ class TrotinettesController {
     }
 
     public function displayTrotinettes() {
-        $trotinettes = $this->trotManager->getTrotinettes();
+        $perPage = (int)1;
+        $numberOfTrotinettes = (int)count($this->trotManager->getTrotinettes());
+        $totalPage = (int)ceil($numberOfTrotinettes / $perPage);
+
+        if (isset($_GET['p']) && !empty($_GET['p']) && $_GET['p'] <= $totalPage) {
+            $currentPage = (int)htmlspecialchars($_GET['p']);
+        } else {
+            $currentPage = 1;
+        }
+        $firstTrotPerPage = (int)($currentPage * $perPage) - $perPage;
+        $allTrotinettes = $this->trotManager->getTrotinettes();
+        $trotinettes = array_slice($allTrotinettes, $firstTrotPerPage, $perPage);
         require 'views/front/trotinettes.view.php';
     }
 
