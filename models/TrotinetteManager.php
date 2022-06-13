@@ -54,6 +54,30 @@ class TrotinetteManager extends ConnexionDb {
         }
     }
 
+    public function addTrotinetteInDatabase($label, $serialNumber, $color, $speed, $battery_life, $price, $status, $description) {
+        $connexionDb = $this->getConnexionDb();
+        $sql = 'INSERT INTO trotinettes (label_trotinette, serial_number, date_service, color, 
+                                            speed, battery_life, price, description_trotinette, id_status)
+                VALUES (:label, :serialNumber, DATE(NOW()), :color, :speed, :battery_life, :price, :description, :status)';
+        $stmt = $connexionDb->prepare($sql);
+        $stmt->bindValue(':label', $label, PDO::PARAM_STR);
+        $stmt->bindValue(':serialNumber', $serialNumber, PDO::PARAM_STR);
+        $stmt->bindValue(':color', $color, PDO::PARAM_STR);
+        $stmt->bindValue(':speed', $speed, PDO::PARAM_INT);
+        $stmt->bindValue(':battery_life', $battery_life, PDO::PARAM_INT);
+        $stmt->bindValue(':price', $price, PDO::PARAM_INT);
+        $stmt->bindValue(':description', $description, PDO::PARAM_STR);
+        $stmt->bindValue(':status', $status, PDO::PARAM_INT);
+        $result = $stmt->execute();
+        $stmt->closeCursor();
+
+        if ($result) {
+            $trotinette = new Trotinette($this->getConnexionDb()->lastInsertId(), $label, $serialNumber, date("Y-m-d"), $color, $speed, $battery_life, $price, $description, $status, '', '', '');
+            $this->AddTrotinette($trotinette);
+        }
+    }
+
+
 }
 
 
