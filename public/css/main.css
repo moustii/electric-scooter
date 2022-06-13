@@ -26,3 +26,7 @@ body {
     text-shadow: white 1px 1px 1px;
     font-weight: bold;
 }
+
+textarea {
+    resize: none;
+}
