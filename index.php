@@ -1,8 +1,10 @@
 <?php
 
 require_once 'controllers/front/TrotinettesController.php';
+require_once 'controllers/back/TrotinettesBackController.php';
 
 $trotController = new TrotinettesController();
+$trotBackController = new TrotinettesBackController();
 
 // verifie si la variable passé en get existe et vide
 // si oui affiche la page accueil
@@ -18,12 +20,18 @@ try {
                     $trotController->displayTrotinettes();
                 } else {
                     switch($_GET['action']) {
-                        case 'r' : $trotController->showTrotinette($_GET['id']);
+                        case 'r': $trotController->showTrotinette($_GET['id']);
+                        break; 
+                        case 'c': $trotBackController->addTrotinette();
+                        break;
+                        case 'cv': $trotBackController->addTrotinetteValidate();
                         break; 
                     }
                 }      
             break;
             case 'nous': $trotController->getNous();
+            break;
+            case 'dashboard': $trotBackController->displayTrotinettes();
             break;
         }
     }
