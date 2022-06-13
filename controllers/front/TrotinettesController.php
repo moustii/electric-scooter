@@ -1,8 +1,9 @@
 <?php
 require_once './models/TrotinetteManager.php';
+require_once './config/Tools.php';
 
 class TrotinettesController {
-    private $trotManager;
+    protected $trotManager;
 
     public function __construct() {
         $this->trotManager = new TrotinetteManager();
