@@ -5,7 +5,7 @@ $description = "La page listant les trotinettes";
 ?>
 
 <form action="index.php?page=trotinettes&action=cv" method="POST" enctype="multipart/form-data">
-    <div class="mb-3">
+    <!-- <div class="mb-3">
         <label for="label" class="form-label">Libelle : </label>
         <input type="text" class="form-control" id="label" name="label" placeholder="Renseigner le champs" required>
     </div>
@@ -29,7 +29,6 @@ $description = "La page listant les trotinettes";
         <label for="price" class="form-label">Prix : </label>
         <input type="number" class="form-control" id="price" name="price" placeholder="Renseigner le champs" required>
     </div>
-    <!-- <div clas="mb-3"> -->
     <select class="form-select" name="status" aria-label="Default select example">
         <option selected>Définissez le statut de la trotinette</option>
         <option value="1">dispo</option>
@@ -38,10 +37,10 @@ $description = "La page listant les trotinettes";
     <div class="mb-3">
         <label for="description" class="form-label">Description : </label>
         <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-    </div>
+    </div> -->
     <div class="mb-3">
         <label for="image" class="form-label">Image(s) : </label>
-        <input class="form-control" type="file" id="image" name="image" multiple>
+        <input class="form-control" type="file" id="image" name="image[]" accept=".png, .jpg" multiple>
     </div>
     <button type="submit" class="btn btn-primary">Ajouter</button>
 </form>
