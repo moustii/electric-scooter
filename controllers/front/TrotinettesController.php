@@ -20,7 +20,7 @@ class TrotinettesController {
     }
 
     public function displayTrotinettes() {
-        $perPage = (int)1;
+        $perPage = (int)6;
         $numberOfTrotinettes = (int)count($this->trotManager->getTrotinettes());
         $totalPage = (int)ceil($numberOfTrotinettes / $perPage);
 

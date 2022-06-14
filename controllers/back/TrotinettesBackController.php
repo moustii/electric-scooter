@@ -25,15 +25,23 @@ class TrotinettesBackController extends TrotinettesController {
     }
 
     public function addTrotinetteValidate() {
-        // $file = $_FILES['image'];
-        // $dir = 'public/images/';
-        // $imageName = Tools::addImage($file, $dir);
+        
+        $files = $_FILES['image'];
+        $dir = 'public/sources/images/trotinettes/';
+        // imageName doit contenir les deux noms de fichiers
+        $imagesName[] = Tools::addImage($files, $dir);
+        var_dump($imagesName);
 
-        $this->trotManager->addTrotinetteInDatabase($_POST['label'], $_POST['serialNumber'],$_POST['color'], $_POST['speed'], $_POST['battery'], $_POST['price'], $_POST['status'], $_POST['description']);
+
+        // $lastIdImage = $this->trotManager->addImageTrotinetteInDataBase($imageName);
+
+        // $lastIdTrot = $this->trotManager->addTrotinetteInDatabase($_POST['label'], $_POST['serialNumber'],$_POST['color'], $_POST['speed'], $_POST['battery'], $_POST['price'], $_POST['status'], $_POST['description']);
+
+        // $imageTrot = $this->trotManager->bindImageToTrotInDataBase($lastIdImage, $lastIdTrot);
         
-        header('Location: index.php?page=dashboard');
+        // header('Location: index.php?page=dashboard');
         
-        
+    
         
     }
 
