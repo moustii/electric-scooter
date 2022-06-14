@@ -74,9 +74,30 @@ class TrotinetteManager extends ConnexionDb {
         if ($result) {
             $trotinette = new Trotinette($this->getConnexionDb()->lastInsertId(), $label, $serialNumber, date("Y-m-d"), $color, $speed, $battery_life, $price, $description, $status, '', '', '');
             $this->AddTrotinette($trotinette);
+            $lastId = $this->getConnexionDb()->lastInsertId();
+            return $lastId;
         }
     }
 
+    public function addImageTrotinetteInDataBase($imageName) {
+        $connexionDb = $this->getConnexionDb();
+        $sql = 'INSERT INTO images (url_image) VALUES (:imageName)';
+        $stmt = $connexionDb->prepare($sql);
+        $stmt->bindValue(':imageName', $imageName, PDO::PARAM_STR);
+        $stmt->execute();
+        $lastIdImage = $this->getConnexionDb()->lastInsertId();
+        return $lastIdImage;
+    }
+
+    public function bindImageToTrotInDataBase($idImage, $idTrot) {
+        $connexionDb = $this->getConnexionDb();
+        $sql = 'INSERT INTO possede (id_image, id_trotinette) VALUES (:idImage, :idTrot)';
+        $stmt = $connexionDb->prepare($sql);
+        $stmt->bindValue(':idImage', $idImage, PDO::PARAM_INT);
+        $stmt->bindValue(':idTrot', $idTrot, PDO::PARAM_INT);
+        $stmt->execute();
+
+    }
 
 }
 
