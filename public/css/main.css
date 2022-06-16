@@ -30,3 +30,9 @@ body {
 textarea {
     resize: none;
 }
+
+.perso-icon-circle {
+    width: 29px;
+    height: 29px;
+    border-radius: 100%;
+}
