@@ -9,15 +9,7 @@ $description = "La page listant les trotinettes";
     <div class="col-sm-12 col-md-6 col-lg-4">
         <div class="card mb-3">
             <h3 class="card-header text-center"><?=$trotinette->getLabel()?></h3>
-            <!-- <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-            </div> -->
             <img class="img-fluid persoImg mx-auto my-2" src="public/sources/images/trotinettes/<?=$trotinette->getUrlImage()?>" alt="<?=$trotinette->getLabelImage()?>">
-            <!-- <div class="card-body">
-                <p class="card-text">
-                
-                </p>
-            </div> -->
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">Couleur : <?=$trotinette->getColor()?></li>
                 <li class="list-group-item">Vitesse max : <?=$trotinette->getSpeed()?> km/h</li>
@@ -33,8 +25,8 @@ $description = "La page listant les trotinettes";
             </ul>
                 <div class="card-footer text-muted text-end">
                     <?=$trotinette->getDateService()?>
-                    <a href="index.php?page=trotinettes&action=r&id=<?=$trotinette->getId()?>" class="btn btn-primary p-1 m-1 text-center">
-                        <i class="fa-solid fa-eye" style="color: white;"></i>
+                    <a href="index.php?page=trotinettes&action=r&id=<?=$trotinette->getId()?>" class="btn btn-primary p-1 m-1 text-center perso-icon-circle" id="btn<?=$trotinette->getId()?>" onclick="animation(<?=$trotinette->getId()?>)">
+                        <i class="fa-solid fa-eye" id="eye<?=$trotinette->getId()?>" style="color: white;"></i>
                     </a>
                 </div>
         </div>
