@@ -1,6 +1,6 @@
 <?php
-require_once 'ConnexionDb.php';
-require_once 'Trotinette.php';
+// require_once 'ConnexionDb.php';
+// require_once 'Trotinette.php';
 
 
 class TrotinetteManager extends ConnexionDb {

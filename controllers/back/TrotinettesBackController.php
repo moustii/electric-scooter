@@ -2,7 +2,7 @@
 // require_once './models/TrotinetteManager.php';
 // require_once './config/Tools.php';
 
-class TrotinettesBackController extends TrotinettesController {
+class TrotinettesBackController extends TrotinettesFrontController {
 
     public function displayTrotinettes() {
         $perPage = (int)10;
