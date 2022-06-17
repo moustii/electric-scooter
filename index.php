@@ -1,9 +1,13 @@
 <?php
+// require_once 'models/ConnexionDb.php';
+// require_once 'models/Trotinette.php';
+// require_once './models/TrotinetteManager.php';
+// require_once './config/Tools.php';
+// require_once 'controllers/front/TrotinettesFrontController.php';
+// require_once 'controllers/back/TrotinettesBackController.php';
+require 'config/autoload.php';
 
-require_once 'controllers/front/TrotinettesController.php';
-require_once 'controllers/back/TrotinettesBackController.php';
-
-$trotController = new TrotinettesController();
+$trotController = new TrotinettesFrontController();
 $trotBackController = new TrotinettesBackController();
 
 // verifie si la variable passé en get existe et vide
