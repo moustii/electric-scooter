@@ -1,38 +1,36 @@
 <?php
-// require_once 'ConnexionDb.php';
-// require_once 'Trotinette.php';
-
 
 class TrotinetteManager extends ConnexionDb {
-    private $trotinettes;
+    // private $trotinettes;
 
-    private function AddTrotinette($trotinette) {
-        $this->trotinettes[] = $trotinette;
-    }
+    // private function AddTrotinette($trotinette) {
+    //     $this->trotinettes[] = $trotinette;
+    // }
 
-    public function getTrotinettes() {
-        return $this->trotinettes;
-    }
+    // public function getTrotinettes() {
+    //     return $this->trotinettes;
+    // }
 
-    public function generatorTrotinette() {
-        $connexionDb = $this->getConnexionDb();
-        $sql = "SELECT  trotinettes.id_trotinette, label_trotinette, serial_number, date_service, color,
-                        speed, battery_life, 
-                        price, description_trotinette, id_status ,images.id_image, label_image, url_image, description_image
-                FROM `possede` 
-                INNER JOIN trotinettes ON possede.id_trotinette = trotinettes.id_trotinette
-                INNER JOIN images ON possede.id_image = images.id_image";
-        $query = $connexionDb->prepare($sql);
-        $query->execute();
-        $trotinettes = $query->fetchAll(PDO::FETCH_ASSOC);
-        $query->closeCursor();
+    // public function generatorTrotinette() {
+    //     $connexionDb = $this->getConnexionDb();
+    //     $sql = "SELECT  trotinettes.id_trotinette, label_trotinette, serial_number, date_service, color,
+    //                     speed, battery_life, 
+    //                     price, description_trotinette, id_status ,images.id_image, label_image, url_image, description_image
+    //             FROM `possede` 
+    //             INNER JOIN trotinettes ON possede.id_trotinette = trotinettes.id_trotinette
+    //             INNER JOIN images ON possede.id_image = images.id_image";
+    //     $query = $connexionDb->prepare($sql);
+    //     $query->execute();
+    //     $trotinettes = $query->fetchAll(PDO::FETCH_ASSOC);
+    //     $query->closeCursor();
         
-        foreach ($trotinettes as $trotinette) {
-            $trot = new Trotinette($trotinette['id_trotinette'], $trotinette['label_trotinette'], $trotinette['serial_number'], $trotinette['date_service'], $trotinette['color'], $trotinette['speed'], $trotinette['battery_life'], $trotinette['price'], $trotinette['description_trotinette'], $trotinette['id_status'], $trotinette['label_image'], $trotinette['url_image'], $trotinette['description_image']);
-            $this->AddTrotinette($trot); 
-        }
-    }
+    //     foreach ($trotinettes as $trotinette) {
+    //         $trot = new Trotinette($trotinette['id_trotinette'], $trotinette['label_trotinette'], $trotinette['serial_number'], $trotinette['date_service'], $trotinette['color'], $trotinette['speed'], $trotinette['battery_life'], $trotinette['price'], $trotinette['description_trotinette'], $trotinette['id_status'], $trotinette['label_image'], $trotinette['url_image'], $trotinette['description_image']);
+    //         $this->AddTrotinette($trot); 
+    //     }
+    // }
 
+    // method pour les images de home
     public function getTrotinette() {
         $connexionDb = $this->getConnexionDb();
         $sql = "SELECT *
@@ -47,11 +45,30 @@ class TrotinetteManager extends ConnexionDb {
     }
 
     public function getTrotinetteById($id) {
-        foreach ($this->trotinettes as $trotinette) {
-            if ($trotinette->getId() === $id) {
-                return $trotinette;
-            }
-        }
+        $connexionDb = $this->getConnexionDb();
+        $sql = 'SELECT `id_trotinette`,`label_trotinette`,`serial_number`,`date_service`,`color`,`speed`,`battery_life`,`price`,`description_trotinette`,`id_status`
+                FROM `trotinettes`
+                WHERE id_trotinette = :id';
+        $stmt = $connexionDb->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $trotinette = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $trotinette;
+    }
+    
+    public function getImageTrotinetteById($id) {
+        $connexionDb = $this->getConnexionDb();
+        $sql = 'SELECT i.id_image, i.label_image, i.url_image, id_trotinette
+                FROM `possede` p 
+                INNER JOIN images i ON i.id_image = p.id_image
+                WHERE id_trotinette = :id';
+        $stmt = $connexionDb->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $images;
     }
 
     public function addTrotinetteInDatabase($label, $serialNumber, $color, $speed, $battery_life, $price, $status, $description) {
@@ -70,13 +87,6 @@ class TrotinetteManager extends ConnexionDb {
         $stmt->bindValue(':status', $status, PDO::PARAM_INT);
         $result = $stmt->execute();
         $stmt->closeCursor();
-
-        if ($result) {
-            $trotinette = new Trotinette($this->getConnexionDb()->lastInsertId(), $label, $serialNumber, date("Y-m-d"), $color, $speed, $battery_life, $price, $description, $status, '', '', '');
-            $this->AddTrotinette($trotinette);
-            $lastId = $this->getConnexionDb()->lastInsertId();
-            return $lastId;
-        }
     }
 
     public function addImageTrotinetteInDataBase($imageName) {
@@ -84,9 +94,12 @@ class TrotinetteManager extends ConnexionDb {
         $sql = 'INSERT INTO images (url_image) VALUES (:imageName)';
         $stmt = $connexionDb->prepare($sql);
         $stmt->bindValue(':imageName', $imageName, PDO::PARAM_STR);
-        $stmt->execute();
-        $lastIdImage = $this->getConnexionDb()->lastInsertId();
-        return $lastIdImage;
+        $result = $stmt->execute();
+
+        if ($result) {
+            $idImage = $this->getConnexionDb()->lastInsertId();
+            return $idImage;
+        }
     }
 
     public function bindImageToTrotInDataBase($idImage, $idTrot) {
@@ -97,6 +110,51 @@ class TrotinetteManager extends ConnexionDb {
         $stmt->bindValue(':idTrot', $idTrot, PDO::PARAM_INT);
         $stmt->execute();
 
+    }
+
+    // method de secours
+    public function getAllTrotinettes() {
+        $connexionDb = $this->getConnexionDb();
+        $sql = 'SELECT id_trotinette, label_trotinette, serial_number, date_service, color, speed, battery_life, price, description_trotinette, id_status
+                FROM `trotinettes`';
+        $stmt = $connexionDb->prepare($sql);
+        $stmt->execute();
+        $trotinettes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $trotinettes;
+    }
+
+    public function getImages() {
+        $connexionDb = $this->getConnexionDb();
+        $sql = 'SELECT i.id_image, i.label_image, i.url_image, id_trotinette
+                FROM `possede` p 
+                INNER JOIN images i ON i.id_image = p.id_image
+                GROUP BY id_trotinette';
+        $stmt = $connexionDb->prepare($sql);
+        $stmt->execute();
+        $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $images;
+    }
+
+    public function deleteTrotinetteInDatabase($id) {
+        $connexionDb = $this->getConnexionDb();
+        $sql = "DELETE FROM trotinettes WHERE id_trotinette = :id";
+        $stmt = $connexionDb->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt->closeCursor();
+    }
+
+    public function deleteImageTrotinetteInDataBase($idtrot) {
+        $connexionDb = $this->getConnexionDb();
+        $sql = "DELETE images, possede
+                FROM `images`
+                INNER JOIN possede ON possede.id_image = images.id_image
+                WHERE id_trotinette = :idtrot";
+        $stmt = $connexionDb->prepare($sql);
+        $stmt->bindValue(':idtrot', $idtrot, PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt->closeCursor();
     }
 
 }

@@ -57,7 +57,7 @@ class Trotinette {
     public function setDescriptionTrotinette($descriptionTrotinette){$this->descriptionTrotinette = $descriptionTrotinette;}
     public function setIdStatus($idStatus){$this->idStatus = $idStatus;}
     public function setLabelImage($labelImage){$this->labelImage = $labelImage;}
-    public function setUrlImage($urlImage){$this->urlImage = $urlImage;}
+    public function setUrlImage($urlImage){$this->urlImage[] = $urlImage;}
     public function setDescriptionImage($descriptionImage){$this->descriptionImage = $descriptionImage;}
 
 }
