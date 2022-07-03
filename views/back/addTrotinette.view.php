@@ -4,14 +4,14 @@ $title = "Nos trotinettes";
 $description = "La page listant les trotinettes";
 ?>
 
-<form action="index.php?page=trotinettes&action=cv" method="POST" enctype="multipart/form-data">
-    <!-- <div class="mb-3">
+<form action="<?=URL?>trotinettes/cv" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
         <label for="label" class="form-label">Libelle : </label>
         <input type="text" class="form-control" id="label" name="label" placeholder="Renseigner le champs" required>
     </div>
     <div class="mb-3">
         <label for="serialNumber" class="form-label">N°serie : </label>
-        <input type="text" maxlength="11" class="form-control" id="serialNumber" name="serialNumber" placeholder="Renseigner le champs" required>
+        <input type="text" minlength="11"  maxlength="11" class="form-control" id="serialNumber" name="serialNumber" placeholder="Renseigner le champs" required>
     </div>
     <div class="mb-3">
         <label for="color" class="form-label">Couleur : </label>
@@ -37,7 +37,7 @@ $description = "La page listant les trotinettes";
     <div class="mb-3">
         <label for="description" class="form-label">Description : </label>
         <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-    </div> -->
+    </div>
     <div class="mb-3">
         <label for="image" class="form-label">Image(s) : </label>
         <input class="form-control" type="file" id="image" name="image[]" accept=".png, .jpg" multiple>

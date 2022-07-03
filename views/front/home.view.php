@@ -10,15 +10,11 @@ $description = "Page accueil trotman";
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<?=$i?>" class="<?=($i===0)?'active':''?>" aria-current="true">
         </button>
     <?php endfor; ?>
-        <!-- <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2">
-        </button>
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3">
-        </button> -->
     </div>
     <div class="carousel-inner">
         <?php foreach($trotinettes as $key => $trotinette):?>
         <div class="carousel-item <?=($key===0)?'active':''?>">
-            <img src="public/sources/images/nouveautes/<?=$trotinette['url_image']?>" class="d-block w-50 h-50 mx-auto img-thumbnail border border-light" alt="<?=$trotinette['label_image']?>">
+            <img src="<?=URL?>public/sources/images/nouveautes/<?=$trotinette['url_image']?>" class="d-block w-50 h-50 mx-auto img-thumbnail border border-light" alt="<?=$trotinette['label_image']?>">
             <div class="carousel-caption d-none d-md-block">
                 <h5 class="persoColorBlack"><?=$trotinette['label_image']?></h5>
                 <p class="persoColorBlack"><?=$trotinette['description_image']?>
@@ -65,3 +61,7 @@ $description = "Page accueil trotman";
 $content = ob_get_clean();
 require 'views/commons/template.php';
 ?>
+
+<?php foreach($image as $img): ?>
+            <img src="<?=URL?>public/sources/images/trotinettes/<?=$img['url_image']?>" class="img-fluid rounded-start" alt="<?=$trotinette['label_trotinette']?>">
+<?php endforeach; ?>
