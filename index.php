@@ -1,42 +1,45 @@
 <?php
-// require_once 'models/ConnexionDb.php';
-// require_once 'models/Trotinette.php';
-// require_once './models/TrotinetteManager.php';
-// require_once './config/Tools.php';
-// require_once 'controllers/front/TrotinettesFrontController.php';
-// require_once 'controllers/back/TrotinettesBackController.php';
-require 'config/autoload.php';
+define('URL', str_replace('index.php', '', isset($_SERVER['HTTPS'])? 'https':'http'.'://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']));
 
-$trotController = new TrotinettesFrontController();
+require_once 'config/autoload.php';
+// faire en sorte d'éviter une liste de controller
+$trotFrontController = new TrotinettesFrontController();
 $trotBackController = new TrotinettesBackController();
 
-// verifie si la variable passé en get existe et vide
-// si oui affiche la page accueil
 try {
     if (empty($_GET['page'])) {
-        $trotController->getHome();
+        $trotFrontController->getHome();
     } else {
-        switch($_GET['page']) {
-            case 'home': $trotController->getHome();
+        $url = explode('/', filter_var($_GET['page']), FILTER_SANITIZE_URL);
+        switch($url[0]) {
+            case 'home': $trotFrontController->getHome();
             break;
             case 'trotinettes': 
-                if (empty($_GET['action'])&& empty($_GET['id'])) {
-                    $trotController->displayTrotinettes();
+                if (empty($url[1])) {
+                    $trotFrontController->displayTrotinettes($url);
                 } else {
-                    switch($_GET['action']) {
-                        case 'r': $trotController->showTrotinette($_GET['id']);
+                    switch($url[1]) {
+                        case 'r': $trotFrontController->showTrotinette($url[2], $url[3]);
                         break; 
                         case 'c': $trotBackController->addTrotinette();
                         break;
                         case 'cv': $trotBackController->addTrotinetteValidate();
                         break; 
+                        case 'page': $trotFrontController->displayTrotinettes($url);
+                        break;
+                        case 'u' : $trotBackController->updateTrotinette($url[2]);
+                        break;
+                        case 'd' : $trotBackController->deleteTrotinette($url[2]);
+                        break;
+                        default : throw new Exception("La page n'existe pas");
                     }
                 }      
             break;
-            case 'nous': $trotController->getNous();
+            case 'nous': $trotFrontController->getNous();
             break;
-            case 'dashboard': $trotBackController->displayTrotinettes();
+            case 'dashboard': $trotBackController->displayTrotinettes($url);
             break;
+            default : throw new Exception("La page n'existe pas");
         }
     }
 } catch(Exception $e) {
