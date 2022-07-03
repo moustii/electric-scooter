@@ -1,21 +1,31 @@
 <?php
-// require_once './models/TrotinetteManager.php';
-// require_once './config/Tools.php';
 
-class TrotinettesBackController extends TrotinettesFrontController {
+class TrotinettesBackController {
+    protected $trotManager;
 
-    public function displayTrotinettes() {
-        $perPage = (int)10;
-        $numberOfTrotinettes = (int)count($this->trotManager->getTrotinettes());
+    public function __construct() {
+            $this->trotManager = new TrotinetteManager();
+            // $this->trotManager->generatorTrotinette();
+    }
+
+    public function displayTrotinettes($url) {
+        if (array_key_exists("1", $url)) {
+            $page = $url[1];
+        }
+        $perPage = (int)6;
+        // $allTrotinettes = $this->trotManager->getAllTrotinettes();
+        $allTrotinettes = $this->trotManager->getAllTrotinettes();
+        
+        $numberOfTrotinettes = (int)count($allTrotinettes);
         $totalPage = (int)ceil($numberOfTrotinettes / $perPage);
 
-        if (isset($_GET['p']) && !empty($_GET['p']) && $_GET['p'] <= $totalPage) {
-            $currentPage = (int)htmlspecialchars($_GET['p']);
+        if (isset($page) && !empty($page) && $page <= $totalPage) {
+            $currentPage = (int)htmlspecialchars($page);
         } else {
             $currentPage = 1;
         }
         $firstTrotPerPage = (int)($currentPage * $perPage) - $perPage;
-        $allTrotinettes = $this->trotManager->getTrotinettes();
+        $images = $this->trotManager->getImages();
         $trotinettes = array_slice($allTrotinettes, $firstTrotPerPage, $perPage);
         require 'views/back/list.trotinettes.view.php';
     }
@@ -25,28 +35,44 @@ class TrotinettesBackController extends TrotinettesFrontController {
     }
 
     public function addTrotinetteValidate() {
-        
         $files = $_FILES['image'];
         $dir = 'public/sources/images/trotinettes/';
         // imageName doit contenir les deux noms de fichiers
-        $imagesName[] = Tools::addImage($files, $dir);
-        var_dump($imagesName);
+        $imagesName = Tools::addImage($files, $dir);
 
+        $this->trotManager->addTrotinetteInDatabase($_POST['label'], $_POST['serialNumber'],$_POST['color'], $_POST['speed'], $_POST['battery'], $_POST['price'], $_POST['status'], $_POST['description']);
 
-        // $lastIdImage = $this->trotManager->addImageTrotinetteInDataBase($imageName);
+        $trotinettes = $this->trotManager->getAllTrotinettes();
+        $lastTrotinette = array_key_last($trotinettes);
+        $lastIdTrot = (int)$trotinettes[$lastTrotinette]['id_trotinette'];
 
-        // $lastIdTrot = $this->trotManager->addTrotinetteInDatabase($_POST['label'], $_POST['serialNumber'],$_POST['color'], $_POST['speed'], $_POST['battery'], $_POST['price'], $_POST['status'], $_POST['description']);
-
-        // $imageTrot = $this->trotManager->bindImageToTrotInDataBase($lastIdImage, $lastIdTrot);
-        
-        // header('Location: index.php?page=dashboard');
-        
-    
-        
+        // insert les images
+        foreach ($imagesName as $key => $imageName) {
+            $idImage[] = (int)$this->trotManager->addImageTrotinetteInDataBase($imageName);  
+            $this->trotManager->bindImageToTrotInDataBase($idImage[$key], $lastIdTrot);
+        }
+        header('Location: '.URL.'dashboard');
     }
 
+    public function deleteTrotinette($id) {
+        // on recupere l'image ou les images correspondant à la trotinette
+        $imageName = $this->trotManager->getImageTrotinetteById($id);
+        // on la supprimer du dossier
+        foreach ($imageName as $key => $img) {
+            unlink('public/sources/images/trotinettes/'.$img['url_image']);
+        }
+        // on supprimer le(s) bind(s) et l'image ou les images dans la bd
+        $this->trotManager->deleteImageTrotinetteInDataBase($id);
+        // // ensuite on supprime la trotinette dans le bd
+        $this->trotManager->deleteTrotinetteInDatabase($id);
+        header('Location: '.URL.'dashboard');
+    }
 
-
+    public function updateTrotinette($id) {
+        $trotinette = $this->trotManager->getTrotinetteById($id);
+        $image = $this->trotManager->getImageTrotinetteById($id);
+        require 'views/back/update.trotinette.view.php';
+    }
 
 
 }

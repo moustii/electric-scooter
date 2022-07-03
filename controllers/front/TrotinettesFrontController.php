@@ -1,13 +1,12 @@
 <?php
-// require_once './models/TrotinetteManager.php';
-// require_once './config/Tools.php';
 
 class TrotinettesFrontController {
     protected $trotManager;
 
+    
     public function __construct() {
         $this->trotManager = new TrotinetteManager();
-        $this->trotManager->generatorTrotinette();
+        // $this->trotManager->generatorTrotinette();
     }
 
     public function getHome() {
@@ -19,24 +18,34 @@ class TrotinettesFrontController {
         require 'views/front/nous.view.php';
     }
 
-    public function displayTrotinettes() {
-        $perPage = (int)6;
-        $numberOfTrotinettes = (int)count($this->trotManager->getTrotinettes());
+    public function displayTrotinettes($url) {
+        if (array_key_exists("2", $url)) {
+            $page = $url[2];
+        }
+        $perPage = (int)3;
+        $allTrotinettes = $this->trotManager->getAllTrotinettes();
+
+        $numberOfTrotinettes = (int)count($allTrotinettes);
         $totalPage = (int)ceil($numberOfTrotinettes / $perPage);
 
-        if (isset($_GET['p']) && !empty($_GET['p']) && $_GET['p'] <= $totalPage) {
-            $currentPage = (int)htmlspecialchars($_GET['p']);
+        if (isset($page) && !empty($page) && $page <= $totalPage) {
+            $currentPage = (int)htmlspecialchars($page);
         } else {
             $currentPage = 1;
         }
         $firstTrotPerPage = (int)($currentPage * $perPage) - $perPage;
-        $allTrotinettes = $this->trotManager->getTrotinettes();
         $trotinettes = array_slice($allTrotinettes, $firstTrotPerPage, $perPage);
+        $images = $this->trotManager->getImages();
         require 'views/front/trotinettes.view.php';
     }
 
-    public function showTrotinette($id) {
+    public function showTrotinette($id, $page) {
+        if (!empty($page)) {
+            $currentPage = $page;
+        }
+    
         $trotinette = $this->trotManager->getTrotinetteById($id);
+        $image = $this->trotManager->getImageTrotinetteById($id);
         require 'views/front/trotinette.view.php';
     }
 }
