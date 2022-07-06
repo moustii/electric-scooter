@@ -29,7 +29,7 @@ $description = "La page listant les trotinettes";
         <label for="price" class="form-label">Prix : </label>
         <input type="number" class="form-control" id="price" name="price" placeholder="Renseigner le champs" required>
     </div>
-    <select class="form-select" name="status" aria-label="Default select example">
+    <select class="form-select" name="status" aria-label="Default select example" required>
         <option selected>Définissez le statut de la trotinette</option>
         <option value="1">dispo</option>
         <option value="2">indispo</option>
