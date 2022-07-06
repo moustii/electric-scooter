@@ -29,6 +29,8 @@ try {
                         break;
                         case 'u' : $trotBackController->updateTrotinette($url[2]);
                         break;
+                        case 'uv' : $trotBackController->updateTrotinetteValidate();
+                        break;  
                         case 'd' : $trotBackController->deleteTrotinette($url[2]);
                         break;
                         default : throw new Exception("La page n'existe pas");
