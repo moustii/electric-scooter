@@ -145,17 +145,70 @@ class TrotinetteManager extends ConnexionDb {
         $stmt->closeCursor();
     }
 
-    public function deleteImageTrotinetteInDataBase($idtrot) {
+    public function deleteImageTrotinetteInDataBase($idTrot) {
         $connexionDb = $this->getConnexionDb();
         $sql = "DELETE images, possede
                 FROM `images`
                 INNER JOIN possede ON possede.id_image = images.id_image
                 WHERE id_trotinette = :idtrot";
         $stmt = $connexionDb->prepare($sql);
-        $stmt->bindValue(':idtrot', $idtrot, PDO::PARAM_INT);
+        $stmt->bindValue(':idtrot', $idTrot, PDO::PARAM_INT);
         $stmt->execute();
         $stmt->closeCursor();
     }
+
+    public function updateTrotinetteInDatabase($idTrot, $label, $serialNumber, $color, $speed, $battery_life, $price, $status, $description) {
+        $connexionDb = $this->getConnexionDb();
+        $sql = 'UPDATE trotinettes 
+                SET label_trotinette = :label,
+                    serial_number = :serialNumber,
+                    date_service =  DATE(NOW()),
+                    color = :color,
+                    speed = :speed,
+                    battery_life = :battery_life,
+                    price = :price,
+                    description_trotinette = :description,
+                    id_status = :status
+                WHERE id_trotinette = :idTrot';
+        $stmt = $connexionDb->prepare($sql);
+        $stmt->bindValue(':label', $label, PDO::PARAM_STR);
+        $stmt->bindValue(':serialNumber', $serialNumber, PDO::PARAM_STR);
+        $stmt->bindValue(':color', $color, PDO::PARAM_STR);
+        $stmt->bindValue(':speed', $speed, PDO::PARAM_INT);
+        $stmt->bindValue(':battery_life', $battery_life, PDO::PARAM_INT);
+        $stmt->bindValue(':price', $price, PDO::PARAM_INT);
+        $stmt->bindValue(':description', $description, PDO::PARAM_STR);
+        $stmt->bindValue(':status', $status, PDO::PARAM_INT);
+        $stmt->bindValue(':idTrot', $idTrot, PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt->closeCursor();
+    }
+
+    public function updateImageTrotinetteInDataBase($idImage, $urlImage) {
+        $connexionDb = $this->getConnexionDb();
+        $sql = 'UPDATE images
+                -- INNER JOIN possede ON possede.id_image = images.id_image
+                SET url_image = :urlImage
+                WHERE id_image = :idImage';
+        $stmt = $connexionDb->prepare($sql);
+        $stmt->bindValue(':urlImage', $urlImage, PDO::PARAM_STR);
+        $stmt->bindValue(':idImage', $idImage, PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt->closeCursor();
+    }
+
+
+
+
+
+
+   
+
+
+
+
+
+
 
 }
 
